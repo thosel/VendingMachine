@@ -127,11 +127,28 @@ namespace VendingMachine
         /// <inheritdoc/>
         /// </summary>
         /// <returns><inheritdoc/></returns>
-        public int EndTransaction()
+        public Dictionary<int, int> EndTransaction()
         {
-            int moneyToReturn = InsertedMoney;
+            Dictionary<int, int> moneyToReturn = new Dictionary<int, int>();
 
-            InsertedMoney -= moneyToReturn;
+            while (InsertedMoney != 0)
+            {
+                for (int i = _denominations.Length - 1; i >= 0; i--)
+                {
+                    while (_denominations[i] <= InsertedMoney)
+                    {
+                        if (moneyToReturn.ContainsKey(_denominations[i]))
+                        {
+                            moneyToReturn[_denominations[i]]++;
+                        }
+                        else
+                        {
+                            moneyToReturn.Add(_denominations[i], 1);
+                        }
+                        InsertedMoney -= _denominations[i];
+                    }
+                }
+            }
 
             return moneyToReturn;
         }

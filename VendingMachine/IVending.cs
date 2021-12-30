@@ -27,9 +27,10 @@ namespace VendingMachine
         public void InsertMoney(int moneyToInsert);
 
         /// <summary>
-        /// Ends the transaction by returning the remaining money.
+        /// Ends the transaction by returning the remaining money in 
+        /// the appropriate denominations.
         /// </summary>
-        /// <returns>The remaining money</returns>
-        public int EndTransaction();
+        /// <returns>The remaining money in the appropriate denominations</returns>
+        public Dictionary<int, int> EndTransaction();
     }
 }

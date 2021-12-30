@@ -129,17 +129,33 @@ namespace VendingMachine.Tests
         }
 
         /// <summary>
-        /// Asserts that the money currently inserted is actually returned when the
-        /// transaction is ended.
+        /// Asserts that the money currently inserted is actually returned in the 
+        /// appropriate denominations when the transaction is ended.
         /// </summary>
         [Fact]
         public void EndTransactionCorrectly()
         {
+            _sut.InsertMoney(1000);
+            _sut.InsertMoney(1000);
+            _sut.InsertMoney(1000);
+            _sut.InsertMoney(1000);
+            _sut.InsertMoney(1000);
             _sut.InsertMoney(100);
+            _sut.InsertMoney(100);
+            _sut.InsertMoney(100);
+            _sut.InsertMoney(20);
+            _sut.InsertMoney(20);
+            _sut.InsertMoney(1);
 
-            int moneyReturned = _sut.EndTransaction();
+            Dictionary<int, int> expectedMoneyReturned = new Dictionary<int, int>();
+            expectedMoneyReturned.Add(1000, 5);
+            expectedMoneyReturned.Add(100, 3);
+            expectedMoneyReturned.Add(20, 2);
+            expectedMoneyReturned.Add(1, 1);
 
-            Assert.Equal(100, moneyReturned);
+            bool isTransactionEndedCorrectly = expectedMoneyReturned.Comparer.Equals(_sut.EndTransaction().Comparer);
+
+            Assert.True(isTransactionEndedCorrectly);
         }
     }
 }
